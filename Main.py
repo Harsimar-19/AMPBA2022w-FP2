@@ -8,7 +8,6 @@ class EnergyForecastModel():
 
 def main():
     #mlModel = pmd.FetchModel()
-    print("Hello World")
     mlModel = "Hello"
     sud.PublishHeading()
     sud.PublishSideBars(mlModel)
