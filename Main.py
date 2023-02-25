@@ -1,18 +1,16 @@
 class EnergyForecastModel():
-    def __init__(self, model, features, rmse, r2square):
+    def __init__(self, model):
         self.model = model
-        self.features = features
-        self.rmse = rmse
-        self.r2square = r2square
 
 
 def main():
-    #mlModel = pmd.FetchModel()
-    mlModel = "Hello"
+    ForecastModel = md.FetchModel()
     sud.PublishHeading()
-    sud.PublishSideBars(mlModel)
+    sud.PublishSideBars(ForecastModel)
+    
 
 if __name__ == '__main__':
-    #import PickledModelDetails as pmd
+    import pandas as pd
     import StreamlitUIDetails as sud
+    import ModelDetails as md
     main()
