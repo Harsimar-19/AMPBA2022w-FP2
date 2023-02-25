@@ -5,7 +5,10 @@ def PublishHeading():
     st.markdown("<h1 style='text-align: center; color: purple;'>Energy Demand Forecasting</h1>", unsafe_allow_html=True)
 
 def PublishSideBars(mlModel):
-    data = st.sidebar.selectbox("Please Explore...", ['About Us',"Energy Consumption",'Developed By'])
+    ReqList = ['About Us']
+    ReqList.extend(list(mlModel['TrainData'].keys()))
+    ReqList.append('Developed By')
+    data = st.sidebar.selectbox("Please Explore...", ReqList)
     ImplementBasedOnSideBars(data, mlModel)
 
 def ImplementBasedOnSideBars(option, mlModel):
@@ -16,14 +19,14 @@ def ImplementBasedOnSideBars(option, mlModel):
     elif option == "Energy Consumption":
         PostForecast(mlModel)
     else:
+        PostDataVariety(mlModel, option)
         pass
 
 def PostAboutUs():
     st.write('''
     ##### 
-    ##### This application has been developed with a purpose to demonstrate the usage of Auto Time Series forecasting to predict stock prices direction based on the market sentiments on news headlines at the same time.
+    ##### Forecasting energy demand is a complicated task that necessitates a thorough understanding of the elements that impact energy use, such as population increase, economic activity, weather patterns, and technology advancements. To examine historical data and forecast future energy consumption, advanced statistical modelling and machine learning techniques are frequently applied.
     ##### We have developed this as a part of a college project.
-    ##### Here, we have chosen a specific stock for our project : SBIN ( State Bank of India – This is an Indian multinational public sector bank & financial services statutory body headquartered in Mumbai ,Maharashtra)
     ##### 
     #### -------------------------------------Caution-----------------------------------------
     ##### 
@@ -53,4 +56,29 @@ def PostForecast(mlModel):
     st.write(InputData)
     st.write(OutputData)
 
-
+def PostDataVariety(mlModel, source):
+    InputData = mlModel['InputData'][source]
+    TrainData = mlModel['TrainData'][source]
+    TestData = mlModel['TestData'][source]
+    ForecastedTestData = mlModel['ForecastedTestData'][source]
+    ForecastedData = mlModel['FinalForecastedData'][source]
+    IpVsFore, TeVsAte = st.tabs(["Input And Forecasted", "Test Vs Forecasted Test"])
+    IpVsFore.subheader("Graph - ")
+    InputData.columns = ['Actual Data']
+    ForecastedData.columns = ['Forecasted Data']
+    IpVsFore.line_chart(pd.concat([InputData,ForecastedData], axis=1))
+    IpVsFore.subheader("Forecasted Data - ")
+    IpVsFore.table(ForecastedData)
+    IpVsFore.subheader("Input Data - ")
+    IpVsFore.table(InputData)
+    
+    TeVsAte.subheader("Graph - ")
+    TestData.columns = ['Test Data']
+    ForecastedTestData.columns = ['Forecasted Test Data']
+    TeVsAte.line_chart(pd.concat([TestData,ForecastedTestData], axis=1))
+    TeVsAte.subheader("Forecasted Test Data - ")
+    TeVsAte.table(ForecastedTestData)
+    TeVsAte.subheader("Test Data - ")
+    TeVsAte.table(TestData)
+    
+    

@@ -10,7 +10,6 @@ def main():
     
 
 if __name__ == '__main__':
-    import pandas as pd
     import StreamlitUIDetails as sud
     import ModelDetails as md
     main()
